@@ -6,14 +6,24 @@ import {
   AGENT_CONTEXT,
 } from "@/lib/cxoContext"
 
-export function getSystemPrompt(tileId: string, tileTitle: string): string {
+export function getSystemPrompt(
+  tileId: string,
+  tileTitle: string,
+  visitorName?: string,
+  visitorRole?: string
+): string {
   const agentContext = AGENT_CONTEXT[tileId] ?? AGENT_CONTEXT["saras-agent"]
+
+  const visitorContext = [
+    visitorName ? `The visitor's name is ${visitorName}. Address them by name naturally in conversation.` : "",
+    visitorRole ? `They identify as: ${visitorRole}. Tailor every response to their decision-making lens, priorities, and business vocabulary. Speak to what matters most to a ${visitorRole}.` : "",
+  ].filter(Boolean).join("\n")
 
   return `You are a Saras AI website experience agent simulating a world-class ecommerce CXO engaging a prospective visitor on the Saras AI website (sarasanalytics.com).
 
 You are currently running as the "${tileTitle}" agent.
 
----
+${visitorContext ? `## Visitor Context\n${visitorContext}\n\n---` : "---"}
 
 ${agentContext}
 

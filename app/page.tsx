@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatUI from "@/components/ChatUI"
+import RoleModal from "@/components/RoleModal"
 import { tiles, type Tile } from "@/lib/tiles"
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -182,9 +183,23 @@ function TileCard({ tile, onClick }: { tile: Tile; onClick: () => void }) {
 
 export default function Home() {
   const [activeTile, setActiveTile] = useState<Tile | null>(null)
+  const [pendingTile, setPendingTile] = useState<Tile | null>(null)
+  const [visitorName, setVisitorName] = useState("")
+  const [visitorRole, setVisitorRole] = useState("")
 
   if (activeTile) {
-    return <ChatUI tile={activeTile} onBack={() => setActiveTile(null)} />
+    return (
+      <ChatUI
+        tile={activeTile}
+        onBack={() => {
+          setActiveTile(null)
+          setVisitorName("")
+          setVisitorRole("")
+        }}
+        visitorName={visitorName}
+        visitorRole={visitorRole}
+      />
+    )
   }
 
   return (
@@ -245,7 +260,7 @@ export default function Home() {
           style={{ gridTemplateColumns: "repeat(4, 1fr)", gridTemplateRows: "repeat(3, minmax(140px, 1fr))" }}
         >
           {tiles.map((tile) => (
-            <TileCard key={tile.id} tile={tile} onClick={() => setActiveTile(tile)} />
+            <TileCard key={tile.id} tile={tile} onClick={() => setPendingTile(tile)} />
           ))}
         </div>
       </section>
@@ -259,6 +274,20 @@ export default function Home() {
           Trusted by Ridge · True Classic · HexClad · Faherty · BPN · Athletic Greens
         </span>
       </footer>
+
+      {/* Role selection modal */}
+      {pendingTile && (
+        <RoleModal
+          tile={pendingTile}
+          onStart={(name, role) => {
+            setVisitorName(name)
+            setVisitorRole(role)
+            setActiveTile(pendingTile)
+            setPendingTile(null)
+          }}
+          onClose={() => setPendingTile(null)}
+        />
+      )}
     </main>
   )
 }

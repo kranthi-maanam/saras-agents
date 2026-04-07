@@ -4,9 +4,14 @@ import { getSystemPrompt } from "@/lib/systemPrompt"
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
 export async function POST(req: Request) {
-  const { messages, tileId, tileTitle } = await req.json()
+  const { messages, tileId, tileTitle, visitorName, visitorRole } = await req.json()
 
-  const systemPrompt = getSystemPrompt(tileId ?? "saras-agent", tileTitle ?? "Saras Agent")
+  const systemPrompt = getSystemPrompt(
+    tileId ?? "saras-agent",
+    tileTitle ?? "Saras Agent",
+    visitorName,
+    visitorRole
+  )
 
   const stream = await groq.chat.completions.create({
     model: "llama-3.3-70b-versatile",

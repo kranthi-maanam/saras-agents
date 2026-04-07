@@ -1,0 +1,1 @@
+/* See TileIllustration.tsx content from Vercel source */

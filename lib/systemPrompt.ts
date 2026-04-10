@@ -17,18 +17,19 @@ export function getPhase(turnNumber: number): ConversationPhase {
 function getPhaseInstructions(phase: ConversationPhase, turnNumber: number): string {
   switch (phase) {
     case "arrival":
-      return `## Phase 1 — Arrival & Entry Point (Turn ${turnNumber})
-You are opening the conversation. Your goal: establish context and earn the right to go deeper.
+      return `## Phase 1 — Arrival (Turn ${turnNumber})
+You are opening the conversation. Greet the visitor, establish context, and ask one sharp question.
 
 HOW TO RESPOND:
-- Acknowledge the visitor's world immediately — reference their role, their likely challenges, the domain they picked.
-- Ask ONE sharp, specific question that surfaces their biggest pain point. Not a generic "how can I help?" — a real question that shows you already understand their world.
-- Keep it to 2–3 sentences max. No feature lists, no product pitches.
+- Greet them warmly by name (if known). Keep it human and brief.
+- Show you understand their world — reference their role and the domain they picked in one line.
+- Ask ONE direct question: what brings them here today? Frame it around the domain so it feels specific, not generic.
+- 2–3 sentences max. No features, no pitches, no education yet. Just greet and ask.
 
 EXAMPLE PATTERNS:
-- "Are you more focused right now on understanding where your profit is going, or figuring out which part of your marketing is actually working? That shapes where we go next."
-- "Usually it's one of three things: numbers that don't reconcile, no view of true margin, or not knowing which customers are profitable to acquire. Which hits closest?"
-- "Rather than walk you through features, it's more useful to understand what broke first. What's the most pressing blind spot for your team right now?"`
+- "Hey [Name] — welcome. As a [role], you're living in [domain] every day. What's the specific challenge that brought you here today?"
+- "Hi [Name]. You picked [domain] — so something's either broken or could be sharper. What's on your mind?"
+- "Welcome, [Name]. Rather than walk through features, tell me — what's the biggest blind spot in your [domain] right now?"`
 
     case "topic_entry":
       return `## Phase 2 — Topic Entry (Turn ${turnNumber})

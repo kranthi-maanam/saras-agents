@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 import {
   GitBranch, Database, DollarSign, Users, Megaphone,
-  Package, Bot, Layers, ArrowLeft, Send, PanelRightClose, PanelRight
+  Package, Bot, Layers, ArrowLeft, Send, X, ExternalLink
 } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import LeadModal from "@/components/LeadModal"
@@ -35,6 +35,15 @@ const HIGH_INTENT_KEYWORDS = [
   "next steps", "buy", "purchase", "subscribe",
 ]
 
+const DASHBOARD_TRIGGER_KEYWORDS = [
+  "show me the dashboard", "show the dashboard", "show dashboard",
+  "atomic profitability", "show me atomic", "open the dashboard",
+  "see the dashboard", "profitability dashboard", "profitability tracker",
+  "show me the demo", "show the demo", "show demo", "open demo",
+  "cm1", "cm2", "cm3", "contribution margin demo",
+  "show me the data", "show me profitability", "show profitability",
+]
+
 const MAX_TURNS = 20
 
 type Message = { role: "user" | "assistant"; content: string }
@@ -59,7 +68,7 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
   const [brewingIndex, setBrewingIndex] = useState(0)
   const [demoComponents, setDemoComponents] = useState<Map<number, DemoComponentType>>(new Map())
   const [conversationInsights, setConversationInsights] = useState<string[]>([])
-  const [chatCollapsed, setChatCollapsed] = useState(false)
+  const [showDashboard, setShowDashboard] = useState(false)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -103,11 +112,17 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
 
     const trigger = silent ? null : detectDemoTrigger(tile.id, text)
 
-    const silentOpener = tile.id === "contribution-margin"
-      ? `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. They are looking at a live Atomic Profitability dashboard showing contribution margin data (CM1, CM2, CM3) across channels. This is Phase 1 — Arrival. Reference what they're seeing on the dashboard, surface the core pain for their role, and ask ONE sharp diagnostic question. 2–3 sentences max. No product pitch.`
-      : `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. This is Phase 1 — Arrival. Surface the core pain for their role in this domain, and ask ONE sharp diagnostic question. 2–3 sentences max. No product pitch.`
+    const silentOpener = `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. This is Phase 1 — Arrival. Greet them warmly, acknowledge their role and domain in one line, then ask one direct question: what brings them here today? 2–3 sentences max. No features, no pitches.`
 
     const userTurnText = silent ? silentOpener : text.trim()
+
+    // Check if user is asking to see the dashboard (CM agent only)
+    if (!silent && tile.id === "contribution-margin") {
+      const lower = text.toLowerCase()
+      if (DASHBOARD_TRIGGER_KEYWORDS.some((kw) => lower.includes(kw))) {
+        setShowDashboard(true)
+      }
+    }
 
     const userMessage: Message = { role: "user", content: userTurnText }
     const newMessages = silent ? [] : [...messages, { role: "user", content: text.trim() } as Message]
@@ -285,12 +300,12 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
         <ThemeToggle />
       </header>
 
-      {/* Split pane: Dashboard + Chat */}
+      {/* Main content: Dashboard + Chat */}
       <div className="flex-1 flex overflow-hidden">
 
-        {/* Left Pane — Dashboard (only for Contribution Margin) */}
-        {tile.id === "contribution-margin" && (
-          <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${chatCollapsed ? "" : "border-r"}`}
+        {/* Left Pane — Dashboard (opens on demand for CM agent) */}
+        {showDashboard && (
+          <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300 border-r"
             style={{ borderColor: "var(--divider)" }}
           >
             {/* Dashboard sub-header */}
@@ -315,6 +330,14 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
                 <span className="text-[10px]" style={{ color: "var(--text-3)" }}>
                   Atomic Profitability Tracker
                 </span>
+                <button
+                  onClick={() => setShowDashboard(false)}
+                  className="p-1 rounded-md transition-opacity hover:opacity-70"
+                  style={{ color: "var(--text-3)" }}
+                  title="Close dashboard"
+                >
+                  <X size={14} />
+                </button>
               </div>
             </div>
 
@@ -328,32 +351,31 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
           </div>
         )}
 
-        {/* Right Pane — Chat (sidebar for CM, full-width for others) */}
+        {/* Chat pane (sidebar when dashboard open, full-width otherwise) */}
         <div
           className={`flex flex-col transition-all duration-300 overflow-hidden ${
-            tile.id === "contribution-margin"
-              ? chatCollapsed ? "w-0" : "w-[380px] min-w-[320px]"
-              : "flex-1"
+            showDashboard ? "w-[25%] min-w-[300px]" : "flex-1"
           }`}
           style={{ background: "var(--page-bg)" }}
         >
           {/* Chat header */}
           <div className="flex items-center justify-between px-4 py-2.5 border-b" style={{ borderColor: "var(--divider)" }}>
             <span className="text-xs font-semibold" style={{ color: "var(--text-1)" }}>Conversation</span>
-            {tile.id === "contribution-margin" && (
+            {tile.id === "contribution-margin" && !showDashboard && (
               <button
-                onClick={() => setChatCollapsed(true)}
-                className="p-1 rounded-md transition-opacity hover:opacity-70"
-                style={{ color: "var(--text-3)" }}
-                title="Collapse chat"
+                onClick={() => setShowDashboard(true)}
+                className="flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-medium transition-opacity hover:opacity-80"
+                style={{ color: accentColor, background: `${accentColor}12`, border: `1px solid ${accentColor}25` }}
+                title="Open Atomic Profitability dashboard"
               >
-                <PanelRightClose size={16} />
+                <ExternalLink size={10} />
+                Dashboard
               </button>
             )}
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-3">
+          <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-3 w-full max-w-[680px] mx-auto">
             {messages.map((msg, i) => (
               <div key={i}>
                 <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -442,7 +464,7 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
           </div>
 
           {/* Input */}
-          <div className="px-3 pb-3 pt-1">
+          <div className="px-3 pb-3 pt-1 w-full max-w-[680px] mx-auto">
             <div
               className="flex items-end gap-2 rounded-2xl px-3 py-2.5"
               style={{
@@ -477,17 +499,6 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
           </div>
         </div>
 
-        {/* Collapse/expand toggle (visible when chat is collapsed, CM only) */}
-        {tile.id === "contribution-margin" && chatCollapsed && (
-          <button
-            onClick={() => setChatCollapsed(false)}
-            className="absolute right-4 top-[72px] z-10 p-2 rounded-lg transition-opacity hover:opacity-80"
-            style={{ background: "var(--card-bg)", border: "1px solid var(--card-border)", color: "var(--text-2)" }}
-            title="Open chat"
-          >
-            <PanelRight size={18} />
-          </button>
-        )}
       </div>
 
       {/* Lead Modal */}

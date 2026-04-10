@@ -116,6 +116,14 @@ export default function ComponentRenderer({ type, visitorName, visitorEmail, vis
       <Card className="overflow-hidden">
         <DemoContent type={type} />
       </Card>
+
+      {followUps.length > 0 && (
+        <FollowUpBlock>
+          {followUps.map((q) => (
+            <FollowUpItem key={q} text={q} />
+          ))}
+        </FollowUpBlock>
+      )}
     </div>
   )
 }

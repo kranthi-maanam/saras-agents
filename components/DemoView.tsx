@@ -103,9 +103,11 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
 
     const trigger = silent ? null : detectDemoTrigger(tile.id, text)
 
-    const userTurnText = silent
+    const silentOpener = tile.id === "contribution-margin"
       ? `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. They are looking at a live Atomic Profitability dashboard showing contribution margin data (CM1, CM2, CM3) across channels. This is Phase 1 — Arrival. Reference what they're seeing on the dashboard, surface the core pain for their role, and ask ONE sharp diagnostic question. 2–3 sentences max. No product pitch.`
-      : text.trim()
+      : `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. This is Phase 1 — Arrival. Surface the core pain for their role in this domain, and ask ONE sharp diagnostic question. 2–3 sentences max. No product pitch.`
+
+    const userTurnText = silent ? silentOpener : text.trim()
 
     const userMessage: Message = { role: "user", content: userTurnText }
     const newMessages = silent ? [] : [...messages, { role: "user", content: text.trim() } as Message]
@@ -286,60 +288,68 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
       {/* Split pane: Dashboard + Chat */}
       <div className="flex-1 flex overflow-hidden">
 
-        {/* Left Pane — Dashboard */}
-        <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${chatCollapsed ? "" : "border-r"}`}
-          style={{ borderColor: "var(--divider)" }}
-        >
-          {/* Dashboard sub-header */}
-          <div className="flex items-center justify-between px-4 py-2 border-b" style={{ borderColor: "var(--divider)" }}>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "var(--text-3)" }}>
-                Preview
-              </span>
-              <div className="flex items-center gap-1.5 ml-3">
-                {["Shopify", "Amazon", "TikTok"].map((src) => (
-                  <span
-                    key={src}
-                    className="px-2 py-0.5 rounded-full text-[10px] font-medium"
-                    style={{ background: `${accentColor}12`, color: accentColor, border: `1px solid ${accentColor}25` }}
-                  >
-                    {src}
-                  </span>
-                ))}
+        {/* Left Pane — Dashboard (only for Contribution Margin) */}
+        {tile.id === "contribution-margin" && (
+          <div className={`flex-1 flex flex-col overflow-hidden transition-all duration-300 ${chatCollapsed ? "" : "border-r"}`}
+            style={{ borderColor: "var(--divider)" }}
+          >
+            {/* Dashboard sub-header */}
+            <div className="flex items-center justify-between px-4 py-2 border-b" style={{ borderColor: "var(--divider)" }}>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] uppercase tracking-widest font-semibold" style={{ color: "var(--text-3)" }}>
+                  Preview
+                </span>
+                <div className="flex items-center gap-1.5 ml-3">
+                  {["Shopify", "Amazon", "TikTok"].map((src) => (
+                    <span
+                      key={src}
+                      className="px-2 py-0.5 rounded-full text-[10px] font-medium"
+                      style={{ background: `${accentColor}12`, color: accentColor, border: `1px solid ${accentColor}25` }}
+                    >
+                      {src}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px]" style={{ color: "var(--text-3)" }}>
+                  Atomic Profitability Tracker
+                </span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px]" style={{ color: "var(--text-3)" }}>
-                Atomic Profitability Tracker
-              </span>
-            </div>
+
+            {/* Iframe */}
+            <iframe
+              src={DASHBOARD_URL}
+              className="flex-1 w-full border-0"
+              title="Atomic Profitability Dashboard"
+              allow="clipboard-read; clipboard-write"
+            />
           </div>
+        )}
 
-          {/* Iframe */}
-          <iframe
-            src={DASHBOARD_URL}
-            className="flex-1 w-full border-0"
-            title="Atomic Profitability Dashboard"
-            allow="clipboard-read; clipboard-write"
-          />
-        </div>
-
-        {/* Right Pane — Chat Sidebar */}
+        {/* Right Pane — Chat (sidebar for CM, full-width for others) */}
         <div
-          className={`flex flex-col transition-all duration-300 overflow-hidden ${chatCollapsed ? "w-0" : "w-[380px] min-w-[320px]"}`}
+          className={`flex flex-col transition-all duration-300 overflow-hidden ${
+            tile.id === "contribution-margin"
+              ? chatCollapsed ? "w-0" : "w-[380px] min-w-[320px]"
+              : "flex-1"
+          }`}
           style={{ background: "var(--page-bg)" }}
         >
           {/* Chat header */}
           <div className="flex items-center justify-between px-4 py-2.5 border-b" style={{ borderColor: "var(--divider)" }}>
             <span className="text-xs font-semibold" style={{ color: "var(--text-1)" }}>Conversation</span>
-            <button
-              onClick={() => setChatCollapsed(true)}
-              className="p-1 rounded-md transition-opacity hover:opacity-70"
-              style={{ color: "var(--text-3)" }}
-              title="Collapse chat"
-            >
-              <PanelRightClose size={16} />
-            </button>
+            {tile.id === "contribution-margin" && (
+              <button
+                onClick={() => setChatCollapsed(true)}
+                className="p-1 rounded-md transition-opacity hover:opacity-70"
+                style={{ color: "var(--text-3)" }}
+                title="Collapse chat"
+              >
+                <PanelRightClose size={16} />
+              </button>
+            )}
           </div>
 
           {/* Messages */}
@@ -467,8 +477,8 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
           </div>
         </div>
 
-        {/* Collapse/expand toggle (visible when chat is collapsed) */}
-        {chatCollapsed && (
+        {/* Collapse/expand toggle (visible when chat is collapsed, CM only) */}
+        {tile.id === "contribution-margin" && chatCollapsed && (
           <button
             onClick={() => setChatCollapsed(false)}
             className="absolute right-4 top-[72px] z-10 p-2 rounded-lg transition-opacity hover:opacity-80"

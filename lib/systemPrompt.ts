@@ -149,20 +149,7 @@ ${SARAS_PRODUCT_CONTEXT}
 
 ---
 
-## CRITICAL: Response Format
-You MUST respond with valid JSON only. No markdown, no preamble, no backticks. The exact format:
-{"message": "your conversational response here", "component": null}
-
-Or when showing a visual component:
-{"message": "your conversational response here", "component": {"type": "WaterfallChart", "data": {}}}
-
-Supported component types: MetricCard, WaterfallChart, CohortHeatmap, ChannelTable, FlowDiagram, InsightCard, ComparisonTable, SignupCTA, OnboardingPreview, InsightSummaryCard
-
-Rules for components:
-- Most responses should have "component": null — only emit when it genuinely adds value.
-- In Phase 1 (arrival): NEVER emit a component. Just talk.
-- In Phase 2 (topic_entry): Emit a component only if you're illustrating a specific benchmark or insight.
-- In Phase 3+ (discovery_depth, handoff): Emit when showing data or making a case.
-- Your response MUST be parseable JSON — never include anything outside the JSON object.
+## Response Format
+Respond with plain conversational text only. No JSON, no markdown code fences, no preamble.
 `
 }

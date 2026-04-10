@@ -27,18 +27,24 @@ const DOMAIN_COLORS: Record<string, string> = {
 
 interface Props {
   tile: Tile
-  onStart: (name: string, role: string) => void
+  onStart: (name: string, email: string, role: string) => void
   onClose: () => void
 }
 
 export default function RoleModal({ tile, onStart, onClose }: Props) {
   const [name, setName] = useState("")
+  const [nameTouched, setNameTouched] = useState(false)
+  const [email, setEmail] = useState("")
+  const [emailTouched, setEmailTouched] = useState(false)
   const [selectedRole, setSelectedRole] = useState("")
   const accentColor = DOMAIN_COLORS[tile.id] ?? "#00a878"
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  const canStart = name.trim().length > 0 && emailValid && selectedRole.length > 0
+
   function handleStart() {
-    if (!selectedRole) return
-    onStart(name.trim(), selectedRole)
+    if (!canStart) return
+    onStart(name.trim(), email.trim(), selectedRole)
   }
 
   return (
@@ -80,18 +86,48 @@ export default function RoleModal({ tile, onStart, onClose }: Props) {
         </p>
 
         {/* Name input */}
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Your name (optional)"
-          className="w-full rounded-xl px-3 py-2.5 text-sm mb-4 outline-none"
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.10)",
-            color: "rgba(255,255,255,0.85)",
-          }}
-        />
+        <div className="mb-4">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={() => setNameTouched(true)}
+            placeholder="Your full name"
+            className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid ${nameTouched && !name.trim() ? "rgba(239,68,68,0.60)" : "rgba(255,255,255,0.10)"}`,
+              color: "rgba(255,255,255,0.85)",
+            }}
+          />
+          {nameTouched && !name.trim() && (
+            <p className="mt-1.5 text-[11px]" style={{ color: "rgba(239,68,68,0.80)" }}>
+              Full name is required
+            </p>
+          )}
+        </div>
+
+        {/* Email input */}
+        <div className="mb-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setEmailTouched(true)}
+            placeholder="Work email"
+            className="w-full rounded-xl px-3 py-2.5 text-sm outline-none"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid ${emailTouched && !emailValid ? "rgba(239,68,68,0.60)" : "rgba(255,255,255,0.10)"}`,
+              color: "rgba(255,255,255,0.85)",
+            }}
+          />
+          {emailTouched && !emailValid && (
+            <p className="mt-1.5 text-[11px]" style={{ color: "rgba(239,68,68,0.80)" }}>
+              A valid email is required
+            </p>
+          )}
+        </div>
 
         {/* Role grid */}
         <div className="grid grid-cols-2 gap-2 mb-5">
@@ -118,12 +154,12 @@ export default function RoleModal({ tile, onStart, onClose }: Props) {
         {/* CTA */}
         <button
           onClick={handleStart}
-          disabled={!selectedRole}
+          disabled={!canStart}
           className="w-full rounded-xl py-3 text-sm font-semibold transition-all duration-150"
           style={{
-            background: selectedRole ? accentColor : "rgba(255,255,255,0.06)",
-            color: selectedRole ? "#fff" : "rgba(255,255,255,0.25)",
-            cursor: selectedRole ? "pointer" : "not-allowed",
+            background: canStart ? accentColor : "rgba(255,255,255,0.06)",
+            color: canStart ? "#fff" : "rgba(255,255,255,0.25)",
+            cursor: canStart ? "pointer" : "not-allowed",
           }}
         >
           Start conversation →

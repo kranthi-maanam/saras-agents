@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   GitBranch, Database, DollarSign, Users, Megaphone,
   Package, Bot, Layers,
@@ -185,18 +185,49 @@ export default function Home() {
   const [activeTile, setActiveTile] = useState<Tile | null>(null)
   const [pendingTile, setPendingTile] = useState<Tile | null>(null)
   const [visitorName, setVisitorName] = useState("")
+  const [visitorEmail, setVisitorEmail] = useState("")
   const [visitorRole, setVisitorRole] = useState("")
+
+  // Restore session on mount
+  useEffect(() => {
+    const savedName  = sessionStorage.getItem("saras_visitor_name")  ?? ""
+    const savedEmail = sessionStorage.getItem("saras_visitor_email") ?? ""
+    const savedRole  = sessionStorage.getItem("saras_visitor_role")  ?? ""
+    if (savedName)  setVisitorName(savedName)
+    if (savedEmail) setVisitorEmail(savedEmail)
+    if (savedRole)  setVisitorRole(savedRole)
+  }, [])
+
+  function handleTileClick(tile: Tile) {
+    // Skip modal if session already captured name + role
+    if (visitorName && visitorRole) {
+      setActiveTile(tile)
+    } else {
+      setPendingTile(tile)
+    }
+  }
+
+  function handleStart(name: string, email: string, role: string) {
+    sessionStorage.setItem("saras_visitor_name",  name)
+    sessionStorage.setItem("saras_visitor_email", email)
+    sessionStorage.setItem("saras_visitor_role",  role)
+    setVisitorName(name)
+    setVisitorEmail(email)
+    setVisitorRole(role)
+    setActiveTile(pendingTile)
+    setPendingTile(null)
+  }
 
   if (activeTile) {
     return (
       <ChatUI
         tile={activeTile}
         onBack={() => {
+          // Keep name/role/email in state and sessionStorage so next agent skips the modal
           setActiveTile(null)
-          setVisitorName("")
-          setVisitorRole("")
         }}
         visitorName={visitorName}
+        visitorEmail={visitorEmail}
         visitorRole={visitorRole}
       />
     )
@@ -260,7 +291,7 @@ export default function Home() {
           style={{ gridTemplateColumns: "repeat(4, 1fr)", gridTemplateRows: "repeat(3, minmax(140px, 1fr))" }}
         >
           {tiles.map((tile) => (
-            <TileCard key={tile.id} tile={tile} onClick={() => setPendingTile(tile)} />
+            <TileCard key={tile.id} tile={tile} onClick={() => handleTileClick(tile)} />
           ))}
         </div>
       </section>
@@ -279,12 +310,7 @@ export default function Home() {
       {pendingTile && (
         <RoleModal
           tile={pendingTile}
-          onStart={(name, role) => {
-            setVisitorName(name)
-            setVisitorRole(role)
-            setActiveTile(pendingTile)
-            setPendingTile(null)
-          }}
+          onStart={handleStart}
           onClose={() => setPendingTile(null)}
         />
       )}

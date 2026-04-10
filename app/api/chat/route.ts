@@ -1,9 +1,8 @@
 import Groq from "groq-sdk"
 import { getSystemPrompt, getPhase } from "@/lib/systemPrompt"
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
 export async function POST(req: Request) {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
   const { messages, tileId, tileTitle, visitorName, visitorRole } = await req.json()
 
   // Determine turn number and phase from message history

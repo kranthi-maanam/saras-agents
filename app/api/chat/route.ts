@@ -1,11 +1,24 @@
 import Groq from "groq-sdk"
 import { getSystemPrompt, getPhase } from "@/lib/systemPrompt"
 
+// Module-level lazy singleton — avoids re-instantiation on every request
+let _groq: Groq | null = null
+function getGroq() {
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+  return _groq
+}
+
+export const maxDuration = 30
+
+const MODELS = [
+  "llama-3.1-8b-instant",
+  "llama-3.3-70b-versatile",
+  "gemma2-9b-it",
+]
+
 export async function POST(req: Request) {
-  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
   const { messages, tileId, tileTitle, visitorName, visitorRole } = await req.json()
 
-  // Determine turn number and phase from message history
   const userMessages = (messages as { role: string }[]).filter((m) => m.role === "user")
   const turnNumber = userMessages.length
   const phase = getPhase(turnNumber)
@@ -19,13 +32,8 @@ export async function POST(req: Request) {
     phase
   )
 
-  const MODELS = [
-    "llama-3.1-8b-instant",
-    "llama-3.3-70b-versatile",
-    "gemma2-9b-it",
-  ]
-
   let stream
+  const groq = getGroq()
   for (const model of MODELS) {
     try {
       stream = await groq.chat.completions.create({
@@ -41,7 +49,7 @@ export async function POST(req: Request) {
     } catch (err: unknown) {
       const status = (err as { status?: number }).status
       if (status === 429 && model !== MODELS[MODELS.length - 1]) {
-        continue // try next model
+        continue
       }
       throw err
     }
@@ -51,50 +59,15 @@ export async function POST(req: Request) {
 
   const encoder = new TextEncoder()
 
+  // Stream tokens directly to the client as they arrive — no buffering
   const readable = new ReadableStream({
     async start(controller) {
-      // Accumulate the full response first, then parse JSON
-      let fullText = ""
-
       for await (const chunk of stream) {
         const token = chunk.choices[0]?.delta?.content ?? ""
-        fullText += token
-      }
-
-      // Try to parse the response as JSON {message, component}
-      let messageText = fullText
-      let component: unknown = null
-
-      try {
-        // Strip potential markdown code fences if the model wraps in them
-        const stripped = fullText.trim().replace(/^```json?\s*/i, "").replace(/\s*```$/, "").trim()
-        const parsed = JSON.parse(stripped)
-        if (parsed && typeof parsed.message === "string") {
-          messageText = parsed.message
-          component = parsed.component ?? null
-        }
-      } catch {
-        // Not valid JSON — stream the raw text as-is (fallback)
-        messageText = fullText
-      }
-
-      // Stream the message text token by token (word chunks for smooth UX)
-      const words = messageText.split(/(\s+)/)
-      for (const word of words) {
-        if (word) {
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify(word)}\n\n`)
-          )
+        if (token) {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(token)}\n\n`))
         }
       }
-
-      // Emit component event if present
-      if (component) {
-        controller.enqueue(
-          encoder.encode(`data: {"component":${JSON.stringify(component)}}\n\n`)
-        )
-      }
-
       controller.enqueue(encoder.encode("data: [DONE]\n\n"))
       controller.close()
     },
@@ -104,7 +77,8 @@ export async function POST(req: Request) {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
-      Connection: "keep-alive",
+      "Connection": "keep-alive",
+      "X-Accel-Buffering": "no", // disables Vercel/nginx proxy buffering for SSE
     },
   })
 }

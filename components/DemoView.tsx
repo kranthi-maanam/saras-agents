@@ -483,8 +483,7 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
       {/* Lead Modal */}
       {showLead && (
         <LeadModal
-          defaultName={visitorName}
-          defaultEmail={visitorEmail}
+          tile={tile}
           onClose={() => setShowLead(false)}
         />
       )}

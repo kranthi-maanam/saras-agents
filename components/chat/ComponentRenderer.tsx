@@ -37,44 +37,44 @@ interface Props {
 
 const FOLLOW_UPS: Partial<Record<DemoComponentType, string[]>> = {
   cm_waterfall: [
-    "What's driving the COGS increase this quarter?",
-    "How does our CM2 compare to industry benchmarks?",
-    "Which SKU category has the best contribution margin?",
+    "I'd like to dig into our shipping costs",
+    "Can you walk me through returns impact?",
+    "Tell me more about how you calculate this",
   ],
   cohort_heatmap: [
-    "Which acquisition cohort has the highest 12-month LTV?",
-    "What's our average repeat purchase rate by month?",
-    "How does LTV trend for paid vs organic cohorts?",
+    "I want to understand our repeat buyers better",
+    "How do you define a profitable cohort?",
+    "What channels are driving our best customers?",
   ],
   marketing_channels: [
-    "Which channel has the lowest CAC payback period?",
-    "How do we rebalance spend to improve blended ROAS?",
-    "Show me Meta vs Google performance last 90 days",
+    "I'd love to explore our Meta spend deeper",
+    "How do you handle attribution differently?",
+    "What should I be looking at instead of ROAS?",
   ],
   pipeline_flow: [
-    "Which connectors have had sync failures this week?",
-    "How fresh is our Shopify orders data?",
-    "What's the impact of a pipeline delay on reporting?",
+    "We're struggling with data freshness — tell me more",
+    "How does this connect to our existing warehouse?",
+    "What happens when a connector breaks?",
   ],
   inventory_metrics: [
-    "Which SKUs are at risk of stockout in the next 30 days?",
-    "What's our current weeks-of-supply across top products?",
-    "How should we adjust reorder points for Q4?",
+    "We've been dealing with overstock lately",
+    "How do you predict demand differently?",
+    "Tell me about the reorder automation",
   ],
   insight_card: [
-    "Tell me more about the revenue anomaly",
-    "What actions should I take on the email opportunity?",
-    "How do I fix the schema drift issue?",
+    "What else can you tell me about this?",
+    "How would this look for my business?",
+    "What's the next thing I should explore?",
   ],
   comparison_table: [
-    "Why is our paid media spend above benchmark?",
-    "How can we close the gap on email revenue?",
-    "What would 1% CM improvement mean for our P&L?",
+    "How do brands like ours typically improve here?",
+    "I'd like to see this for a different metric",
+    "What would you recommend we focus on first?",
   ],
   onboarding_preview: [
-    "How long does data backfill take?",
-    "Do I need an engineering team to set this up?",
-    "What connectors do you support?",
+    "Walk me through the setup process",
+    "How quickly can we see our own data?",
+    "What integrations do you support?",
   ],
 }
 

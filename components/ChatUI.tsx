@@ -156,7 +156,7 @@ export default function ChatUI({ tile, onBack, visitorName, visitorEmail, visito
       emailTimerRef.current = setTimeout(() => setShowEmailCTA(true), 120_000)
     }
 
-    const userTurnText = silent ? `You are beginning a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""}. Open with a sharp, relevant question tailored to their role and the ${tile.title} domain. Be concise — 2 sentences max.` : text.trim()
+    const userTurnText = silent ? `You are opening a conversation with a visitor${visitorName ? ` named ${visitorName}` : ""}${visitorRole ? ` who is a ${visitorRole}` : ""} who just selected the "${tile.title}" domain. This is Phase 1 — Arrival. Acknowledge their world, surface the core pain for their role in this domain, and ask ONE sharp diagnostic question. 2–3 sentences max. No product pitch, no feature list.` : text.trim()
 
     // Build message history (silent opener is NOT shown in UI as a user message)
     const userMessage: Message = { role: "user", content: userTurnText }
@@ -366,10 +366,10 @@ export default function ChatUI({ tile, onBack, visitorName, visitorEmail, visito
                 className="max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed"
                 style={
                   msg.role === "user"
-                    ? { background: "#00a878", color: "#fff" }
+                    ? { background: accentColor, color: "#fff" }
                     : {
                         background: "var(--card-bg)",
-                        border: "1px solid var(--card-border)",
+                        border: `1px solid ${accentColor}25`,
                         color: "var(--text-1)",
                         backdropFilter: "var(--card-blur)",
                       }

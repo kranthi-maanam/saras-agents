@@ -1,5 +1,5 @@
 import Groq from "groq-sdk"
-import { getSystemPrompt } from "@/lib/systemPrompt"
+import { getSystemPrompt, getPhase } from "@/lib/systemPrompt"
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
@@ -9,9 +9,7 @@ export async function POST(req: Request) {
   // Determine turn number and phase from message history
   const userMessages = (messages as { role: string }[]).filter((m) => m.role === "user")
   const turnNumber = userMessages.length
-  const phase =
-    turnNumber <= 2 ? "discovery" :
-    turnNumber <= 6 ? "deep_dive" : "close"
+  const phase = getPhase(turnNumber)
 
   const systemPrompt = getSystemPrompt(
     tileId ?? "saras-agent",

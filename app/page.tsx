@@ -1,11 +1,13 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   GitBranch, Database, DollarSign, Users, Megaphone,
   Package, Bot, Layers,
 } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatUI from "@/components/ChatUI"
+import DemoView from "@/components/DemoView"
+import RoleModal from "@/components/RoleModal"
 import { tiles, type Tile } from "@/lib/tiles"
 
 const ICON_MAP: Record<string, React.ElementType> = {
@@ -182,9 +184,54 @@ function TileCard({ tile, onClick }: { tile: Tile; onClick: () => void }) {
 
 export default function Home() {
   const [activeTile, setActiveTile] = useState<Tile | null>(null)
+  const [pendingTile, setPendingTile] = useState<Tile | null>(null)
+  const [visitorName, setVisitorName] = useState("")
+  const [visitorEmail, setVisitorEmail] = useState("")
+  const [visitorRole, setVisitorRole] = useState("")
+
+  // Restore session on mount
+  useEffect(() => {
+    const savedName  = sessionStorage.getItem("saras_visitor_name")  ?? ""
+    const savedEmail = sessionStorage.getItem("saras_visitor_email") ?? ""
+    const savedRole  = sessionStorage.getItem("saras_visitor_role")  ?? ""
+    if (savedName)  setVisitorName(savedName)
+    if (savedEmail) setVisitorEmail(savedEmail)
+    if (savedRole)  setVisitorRole(savedRole)
+  }, [])
+
+  function handleTileClick(tile: Tile) {
+    // Skip modal if session already captured name + role
+    if (visitorName && visitorRole) {
+      setActiveTile(tile)
+    } else {
+      setPendingTile(tile)
+    }
+  }
+
+  function handleStart(name: string, email: string, role: string) {
+    sessionStorage.setItem("saras_visitor_name",  name)
+    sessionStorage.setItem("saras_visitor_email", email)
+    sessionStorage.setItem("saras_visitor_role",  role)
+    setVisitorName(name)
+    setVisitorEmail(email)
+    setVisitorRole(role)
+    setActiveTile(pendingTile)
+    setPendingTile(null)
+  }
 
   if (activeTile) {
-    return <ChatUI tile={activeTile} onBack={() => setActiveTile(null)} />
+    return (
+      <DemoView
+        tile={activeTile}
+        onBack={() => {
+          // Keep name/role/email in state and sessionStorage so next agent skips the modal
+          setActiveTile(null)
+        }}
+        visitorName={visitorName}
+        visitorEmail={visitorEmail}
+        visitorRole={visitorRole}
+      />
+    )
   }
 
   return (
@@ -245,7 +292,7 @@ export default function Home() {
           style={{ gridTemplateColumns: "repeat(4, 1fr)", gridTemplateRows: "repeat(3, minmax(140px, 1fr))" }}
         >
           {tiles.map((tile) => (
-            <TileCard key={tile.id} tile={tile} onClick={() => setActiveTile(tile)} />
+            <TileCard key={tile.id} tile={tile} onClick={() => handleTileClick(tile)} />
           ))}
         </div>
       </section>
@@ -259,6 +306,15 @@ export default function Home() {
           Trusted by Ridge · True Classic · HexClad · Faherty · BPN · Athletic Greens
         </span>
       </footer>
+
+      {/* Role selection modal */}
+      {pendingTile && (
+        <RoleModal
+          tile={pendingTile}
+          onStart={handleStart}
+          onClose={() => setPendingTile(null)}
+        />
+      )}
     </main>
   )
 }

@@ -4,7 +4,7 @@
     {
       "name": "Next.js Dev",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "PATH=/usr/local/bin:$PATH /usr/local/bin/node /usr/local/bin/npm run dev"],
+      "runtimeArgs": ["-c", "cd '/Users/kranthimaanam/Documents/saras-agent - New' && PATH=/usr/local/bin:$PATH /usr/local/bin/node /usr/local/bin/npm run dev"],
       "port": 3000,
       "autoPort": true
     }

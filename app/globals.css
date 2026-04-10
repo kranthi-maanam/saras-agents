@@ -1,40 +1,75 @@
 @import "tailwindcss";
 /* ── Light mode tokens ── */
 :root {
-  --page-bg: #eef0f5;
-  --page-bg-gradient: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,168,120,0.07) 0%, transparent 70%),
-                      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(99,102,241,0.05) 0%, transparent 60%),
-                      linear-gradient(160deg, #eef0f5 0%, #e8eaf0 100%);
-  --card-bg: rgba(255,255,255,0.85);
-  --card-hover-bg: rgba(255,255,255,0.98);
-  --card-border: rgba(0,0,0,0.09);
-  --card-hover-border: rgba(0,0,0,0.18);
-  --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover: 0 8px 28px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
-  --text-1: #111214;
-  --text-2: #5c5c63;
-  --text-3: #a8a8b0;
+  --page-bg: #f5f5f7;
+  --page-bg-gradient: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,168,120,0.08) 0%, transparent 70%),
+                      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(99,102,241,0.06) 0%, transparent 60%),
+                      linear-gradient(160deg, #f5f5f7 0%, #ededf0 100%);
+  --card-bg: rgba(255,255,255,0.92);
+  --card-hover-bg: #ffffff;
+  --card-border: rgba(0,0,0,0.08);
+  --card-hover-border: rgba(0,0,0,0.16);
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+  --text-1: #0f0f11;
+  --text-2: #52525b;
+  --text-3: #a1a1aa;
   --divider: rgba(0,0,0,0.07);
   --top-glow: rgba(0,168,120,0.10);
-  --hero-title: #0f1011;
-  --hero-sub: #5c5c63;
-  --hero-desc: #a0a0a8;
+  --hero-title: #0f0f11;
+  --hero-sub: #52525b;
+  --hero-desc: #a1a1aa;
   --footer: rgba(0,0,0,0.28);
   --font-heading: 'Roobert', system-ui, sans-serif;
-  --card-blur: blur(12px);
+  --card-blur: blur(16px);
+  /* ── OpenUI surface tokens (light) ── */
+  --openui-background: #f5f5f7;
+  --openui-foreground: #0f0f11;
+  --openui-elevated: #ffffff;
+  --openui-elevated-light: rgba(255,255,255,0.60);
+  --openui-sunk: rgba(0,0,0,0.04);
+  --openui-sunk-deep: rgba(0,0,0,0.07);
+  --openui-overlay: rgba(0,0,0,0.48);
+  --openui-border-default: rgba(0,0,0,0.08);
+  --openui-border-interactive: rgba(0,0,0,0.16);
+  --openui-border-accent: rgba(0,168,120,0.40);
+  --openui-text-neutral-primary: #0f0f11;
+  --openui-text-neutral-secondary: #52525b;
+  --openui-text-neutral-tertiary: #a1a1aa;
+  --openui-text-brand: #00a878;
+  --openui-text-white: #ffffff;
+  --openui-interactive-accent-default: #00a878;
+  --openui-interactive-accent-hover: #009068;
+  --openui-interactive-accent-disabled: rgba(0,168,120,0.35);
+  --openui-highlight: rgba(0,168,120,0.10);
+  --openui-highlight-strong: rgba(0,168,120,0.18);
+  --openui-info-background: rgba(99,102,241,0.08);
+  --openui-success-background: rgba(0,168,120,0.08);
+  --openui-chat-user-response-bg: #0f0f11;
+  --openui-chat-user-response-text: #ffffff;
+  --openui-shadow-s: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --openui-shadow-m: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+  --openui-shadow-l: 0 8px 32px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.07);
+  --openui-radius-s: 6px;
+  --openui-radius-m: 8px;
+  --openui-radius-l: 12px;
+  --openui-radius-xl: 16px;
+  --openui-font-body: 'Geist', system-ui, sans-serif;
+  --openui-font-heading: 'Roobert', system-ui, sans-serif;
+  --openui-font-code: 'Geist Mono', monospace;
 }
 /* ── Dark mode tokens ── */
 .dark {
-  --page-bg: #0a0a0b;
+  --page-bg: #09090b;
   --page-bg-gradient: none;
-  --card-bg: rgba(255,255,255,0.055);
-  --card-hover-bg: rgba(255,255,255,0.075);
-  --card-border: rgba(255,255,255,0.11);
-  --card-hover-border: rgba(255,255,255,0.22);
+  --card-bg: rgba(255,255,255,0.05);
+  --card-hover-bg: rgba(255,255,255,0.08);
+  --card-border: rgba(255,255,255,0.09);
+  --card-hover-border: rgba(255,255,255,0.18);
   --shadow: none;
   --shadow-hover: none;
-  --text-1: rgba(255,255,255,0.92);
-  --text-2: rgba(255,255,255,0.50);
+  --text-1: rgba(255,255,255,0.94);
+  --text-2: rgba(255,255,255,0.52);
   --text-3: rgba(255,255,255,0.30);
   --divider: rgba(255,255,255,0.07);
   --top-glow: rgba(0,168,120,0.06);
@@ -44,6 +79,41 @@
   --footer: rgba(255,255,255,0.22);
   --font-heading: 'Roobert', system-ui, sans-serif;
   --card-blur: none;
+  /* ── OpenUI surface tokens (dark) ── */
+  --openui-background: #09090b;
+  --openui-foreground: rgba(255,255,255,0.94);
+  --openui-elevated: rgba(255,255,255,0.05);
+  --openui-elevated-light: rgba(255,255,255,0.03);
+  --openui-sunk: rgba(0,0,0,0.30);
+  --openui-sunk-deep: rgba(0,0,0,0.50);
+  --openui-overlay: rgba(0,0,0,0.72);
+  --openui-border-default: rgba(255,255,255,0.09);
+  --openui-border-interactive: rgba(255,255,255,0.18);
+  --openui-border-accent: rgba(0,168,120,0.40);
+  --openui-text-neutral-primary: rgba(255,255,255,0.94);
+  --openui-text-neutral-secondary: rgba(255,255,255,0.52);
+  --openui-text-neutral-tertiary: rgba(255,255,255,0.30);
+  --openui-text-brand: #00c896;
+  --openui-text-white: #ffffff;
+  --openui-interactive-accent-default: #00c896;
+  --openui-interactive-accent-hover: #00dea8;
+  --openui-interactive-accent-disabled: rgba(0,200,150,0.30);
+  --openui-highlight: rgba(0,200,150,0.08);
+  --openui-highlight-strong: rgba(0,200,150,0.14);
+  --openui-info-background: rgba(99,102,241,0.12);
+  --openui-success-background: rgba(0,200,150,0.10);
+  --openui-chat-user-response-bg: rgba(255,255,255,0.08);
+  --openui-chat-user-response-text: rgba(255,255,255,0.94);
+  --openui-shadow-s: none;
+  --openui-shadow-m: none;
+  --openui-shadow-l: none;
+  --openui-radius-s: 6px;
+  --openui-radius-m: 8px;
+  --openui-radius-l: 12px;
+  --openui-radius-xl: 16px;
+  --openui-font-body: 'Geist', system-ui, sans-serif;
+  --openui-font-heading: 'Roobert', system-ui, sans-serif;
+  --openui-font-code: 'Geist Mono', monospace;
 }
 body {
   background: var(--page-bg-gradient, var(--page-bg));
@@ -55,6 +125,10 @@ body {
 @keyframes drawPath {
   to { stroke-dashoffset: 0; }
 }
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-6px); opacity: 1; }
+}
 .tile-draw {
   stroke-dasharray: 300;
   stroke-dashoffset: 300;
@@ -65,3 +139,8 @@ body {
 .group:hover .tile-draw-3 { animation-delay: 160ms; }
 .group:hover .tile-draw-4 { animation-delay: 240ms; }
 .chat-textarea::placeholder { color: rgba(255,255,255,0.22); }
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.component-enter { animation: fadeSlideUp 300ms ease forwards; }

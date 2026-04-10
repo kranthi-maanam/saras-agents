@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 import ThemeToggle from "@/components/ThemeToggle"
 import ChatUI from "@/components/ChatUI"
+import DemoView from "@/components/DemoView"
 import RoleModal from "@/components/RoleModal"
 import { tiles, type Tile } from "@/lib/tiles"
 
@@ -220,7 +221,7 @@ export default function Home() {
 
   if (activeTile) {
     return (
-      <ChatUI
+      <DemoView
         tile={activeTile}
         onBack={() => {
           // Keep name/role/email in state and sessionStorage so next agent skips the modal

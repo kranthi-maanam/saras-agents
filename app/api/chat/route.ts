@@ -20,15 +20,35 @@ export async function POST(req: Request) {
     phase
   )
 
-  const stream = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
-    max_tokens: 1024,
-    messages: [
-      { role: "system", content: systemPrompt },
-      ...messages,
-    ],
-    stream: true,
-  })
+  const MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+    "gemma2-9b-it",
+  ]
+
+  let stream
+  for (const model of MODELS) {
+    try {
+      stream = await groq.chat.completions.create({
+        model,
+        max_tokens: 1024,
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...messages,
+        ],
+        stream: true,
+      })
+      break
+    } catch (err: unknown) {
+      const status = (err as { status?: number }).status
+      if (status === 429 && model !== MODELS[MODELS.length - 1]) {
+        continue // try next model
+      }
+      throw err
+    }
+  }
+
+  if (!stream) throw new Error("All models rate-limited")
 
   const encoder = new TextEncoder()
 

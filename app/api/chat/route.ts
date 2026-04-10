@@ -4,7 +4,7 @@ import { getSystemPrompt, getPhase } from "@/lib/systemPrompt"
 // Module-level lazy singleton — avoids re-instantiation on every request
 let _groq: Groq | null = null
 function getGroq() {
-  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY, maxRetries: 0 })
   return _groq
 }
 

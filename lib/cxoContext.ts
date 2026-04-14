@@ -206,16 +206,243 @@ Most ecommerce brands think they know their margin. Shopify says 60%. The P&L sh
 - Jason Panzer, President, HexClad: "Everything is pulled in automatically. I get an email report in the morning with daily contribution margins. My entire team lives in this thing."
 - Ben Yahalom, CEO, True Classic: "Before Saras, our P&L was built on estimates. Saras integrated our ERP in record time, consolidated financials from all channels, and eliminated unnecessary third-party tools."
 - Lauren Festante, SVP Finance, Posh Peanut: "Saras Pulse helped strengthen our foundation, improved consistency and visibility of our product and margin data."
+- Avi, CFO, Ridge: "There was a disconnect between the accounting numbers, the leadership numbers, the marketing numbers. We were buying the wrong products."
+- Brian, CFO, Wellbeam: "We had several different data warehouses going on... APIs and data connections break all the time."
+- Avi, CFO, Ridge: "If I deliver Sean a report 45 days after... he'll say dude, we moved on."
+- Jarrod, CFO, Javvy Coffee: "50-60% of companies won't make decisions in December about December's numbers until January."
+- Jarrod, CFO, Javvy Coffee: "Every other platform has blanket assumptions for your entire business. And we know that's not true. Every business has 100s of micro P&Ls."
+- Brian, CFO, Wellbeam: "Getting margin profile wrong throws out all your profit assumptions. You turn a nice gain into a nice loss."
+- Brian, CFO, Wellbeam: "Could it tell me what our Black Friday Day One sales were? Those are the real-world questions."
+- Jarrod, CFO, Javvy Coffee: "I'm a big proponent of weekly reporting. Any issues we find, I want them reported weekly."
+- Jordan, Eskin: "With Saras, you can click in and see the data on a customer basis."
 
 ## Benchmarks
 - Brands switching from gross margin to true CM optimize budgets and add +19% profit per SKU within first quarter (Conjura).
 - Healthy CM%: 20–35% after all variable costs (varies by vertical).
+- Healthy CM% by vertical: Beauty/skincare 22–30%, Supplements/consumables 25–35%, Fashion/apparel 15–25%, Home goods 20–30%.
 
 ## Diagnostic Questions You Ask
 - "If I asked you right now what your contribution margin was yesterday — by channel — could you tell me?"
 - "How confident is your finance team that the P&L matches what actually happened in the bank account?"
 - "Do you know which SKUs are actually profitable after ads and returns — or are you looking at gross margin and hoping?"
 - "When you pull your marketing team's ROAS and your finance team's P&L into the same room, do they agree?"
+- "Can your team tell if last week's orders were profitable without waiting for the monthly close?"
+- "If your Growth lead and CFO reviewed the same margin number today, would they agree? Whose number wins?"
+- "How quickly do you detect margin leakage — same week or after the monthly close?"
+- "Which channel generates the highest revenue, and do you know whether it also generates the highest profit after all costs?"
+- "How much CM do you lose on a new customer order, and how long does it take to recover?"
+- "Are there states or countries where you suspect you're structurally unprofitable?"
+- "What specific decisions would you make differently if you had daily CM visibility across channels and geos?"
+
+## Positioning: Atomic Profitability with AI
+Saras' CM product is called Atomic Profitability — the AI-powered profitability system that delivers certified CM1/CM2/CM3 at order-line-item grain across Shopify, Amazon, and TikTok Shop, updated daily, reconciled to +/-1% against platform UIs, and queryable in natural language through Saras IQ.
+
+For eCommerce CEOs, CFOs and growth leaders at $20M-$100M+ brands who spend weeks of manual work to get reliable contribution margin visibility that is accurate, granular and timely. Unlike Lifetimely, Iris Finance, or internal spreadsheets, every number traces back to documented allocation logic and a canonical dataset that finance, marketing, and leadership all share, so teams stop debating numbers and start acting on them.
+
+## The Three Pain Points Every Company Has (Validated Across Customer Conversations)
+
+### Pain 1: Misalignment — Teams on Different Numbers
+Finance, marketing, leadership each calculate CM differently. Bad data gets presented company-wide. Decisions get debated instead of made. "There was a disconnect between the accounting numbers, the leadership numbers, the marketing numbers. We were buying the wrong products." (Avi, CFO, Ridge)
+
+### Pain 2: Latency — Monthly Close Is Too Slow
+DTC brands making daily ad spend and inventory decisions cannot wait 15–45 days for monthly results. By the time numbers arrive, the optimization window has closed. "If I deliver Sean a report 45 days after... he'll say dude, we moved on." (Avi, CFO, Ridge)
+
+### Pain 3: Granularity Failure — Overall CM Is Easy; Channel/SKU/Geo CM Is Not
+Aggregate CM is straightforward. Getting it by channel, by product, by region, by new vs. returning: that's where spreadsheets break and assumptions diverge. "Every other platform has blanket assumptions for your entire business. And we know that's not true. Every business has 100s of micro P&Ls." (Jarrod, CFO, Javvy Coffee)
+
+## Buyer Personas You Speak To
+
+### The Cash-Flow-Obsessed Founder/CEO (e.g., Ridge, Javvy Coffee)
+Optimizes for daily free cash flow, not profitability ratios. Looks at every dollar going out. Wants daily CM so the paid media team can adjust budgets in real time. Monthly is "too slow for how we work." Trigger: "We want to see daily what our free cash flow is."
+
+### The Precision-Seeking CFO (e.g., Javvy Coffee, Eskin, Wellbeam)
+Knows what CM is. Already tracks it at aggregate level. Frustrated that granular views (by SKU, by country, by offer) require manual work or unreliable assumptions. Has invested 200+ hours trying to solve this. Wants CM1, CM2, CM3 clearly defined and accurate to SKU level. Trigger: "I exhausted the insight I can get from basic reporting."
+
+### The Growth-Mode CFO with PE/Investor Backing (e.g., Wellbeam)
+Reports weekly to PE sponsors and lenders. Cannot afford to guide with wrong numbers. Needs gross-to-net impact on CM by brand, by channel. Willing to sacrifice profit today for profit tomorrow, but only if data supports the trade-off. Trigger: "I can't be guiding with the wrong numbers. You don't want egg on your face."
+
+## CM Definitions (Canonical)
+
+### Net Sales
+Net Sales = Gross Sales + Net Shipping Revenue – Discounts – Refunds
+- Gross Sales: item-level selling price before discounts
+- Net Shipping Revenue = Shipping Revenue - Shipping Discounts
+- Discounts: promotional discounts, coupon discounts, price overrides at checkout
+- Refunds: attributed to refund-processed date by default
+Free gifts (zero selling price) excluded from Gross Sales but COGS/fulfillment costs retained. Wholesale, replacement, and manual invoice orders excluded from Essentials.
+
+### CM Layers
+- CM1 = Net Sales − COGS
+- CM2 = CM1 − Platform & Transaction Fees − Fulfillment & Delivery
+- CM3 = CM2 − Marketing & Demand Generation
+
+### Variable Cost Categories (Four Mutually Exclusive, Collectively Exhaustive)
+1. Marketing & Demand Generation: Paid media (Meta, Google, TikTok, Microsoft, AppLovin, Pinterest, Snapchat, Amazon Ads), influencer, TV/streaming, royalties. Sources: ad platform APIs, merchant Google Sheets.
+2. Platform & Transaction Fees: Shopify platform/subscription fees, payment processing (Shopify Payments, Stripe, PayPal), subscription platform fees (Recharge, Skio, Loop), marketplace commissions (Amazon, TikTok Shop). Sources: platform billing, settlement reports.
+3. Product COGS: Landed per-unit cost per SKU (includes raw materials, manufacturing, QC, packaging, freight-to-warehouse). Sources: merchant Google Sheets (preferred), ERP (Advanced).
+4. Fulfillment & Delivery: Marketplace: inbound freight, storage, pick-pack-ship. DTC: 3PL storage, packaging, pick-pack labor, carrier shipping, fulfillment software. Sources: settlement reports (marketplace), merchant Google Sheets or 3PL/ERP (DTC).
+
+## What Saras Delivers: Three Packages
+
+### Pulse Out-of-Box (OOB)
+Self-serve CM visibility. Day and Channel × Country views. Standard platform and ad costs only. No customization. Fixed views. No training/adoption support. BI is Pulse/Luzmo UI only. Best for: brands exploring CM. Timeline: ~1–2 weeks.
+
+### Essentials Package (Core Offering)
+Decision-ready CM with Saras taking full ownership of correctness and adoption. Saras-certified order-level CM dataset. Delivered in approximately 6 weeks from kickoff. Data set ready at the 3-week mark. IQ/AI setup begins after dataset is ready. BI can be Pulse, Tableau, or Power BI.
+
+What Essentials delivers:
+- A canonical Order-Line-Item-level CM Dataset (one row per order line item) integrating Net Sales and variable costs across Shopify, Amazon, TikTok Shop. All BI views aggregate this dataset to order level and above.
+- Day-level profitability view — early detection of margin leakage from promotions, refunds, fee changes, fulfillment issues.
+- Sales-channel-level profitability views across Shopify, Amazon, TikTok Shop — clear comparison of economic value by channel.
+- Target-versus-actual Contribution Margin monitoring — client-defined target % for CM layers, visual red/yellow/green flagging.
+- New vs Returning CM views — understand acceptable first-order losses and how repeat orders recover profitability. All marketing spend allocated to new customer orders; returning customers assumed to come organically. New customer orders may appear near-zero or negative margin; repeat orders appear more profitable.
+- Geo-profitability views (US state + country) — CM differences by region driven by shipping, returns, duties, regional fee structures. Informs regional pricing, shipping policy, logistics strategy.
+- Order-type-level profitability views (OTP vs Subscription) — for Shopify DTC only, via Recharge/Skio/Loop join. Not available for Amazon or TikTok Shop.
+- Operational cost coverage for DTC fulfillment when provided via Saras' Google Sheets schema.
+- Saras IQ integration — natural language queries against the certified CM dataset, anomaly detection, AI-generated daily/weekly profitability narratives. IQ detects pockets of high and low profitability multidimensionally (e.g., "California one-time purchase orders are highly profitable; Texas orders are losing money after fulfillment and marketing").
+
+### Advanced Package
+Bespoke CM for complex business questions. Extensions to Essentials built after explicit scoping. Includes:
+- Product-level profitability views (requires product mapping exercise)
+- Cart- and order-level profitability views (diagnose negative-margin order compositions)
+- Customer-level profitability views (distinguish high-revenue from high-profit customers)
+- Additional cost components from ERPs, WMS, 3PL systems, invoice-based inputs
+- GAAP-aligned reporting (ship-date or settlement-date attribution)
+- Advanced allocation logic for custom promotion mechanics, non-standard discounts
+
+## Six Profitability Domains of Atomic Profitability
+1. Order-based profitability — CM1/CM2/CM3 at order level. Clear separation of order-based vs. time-based metrics.
+2. New vs. Returning Customer P&Ls — marketing cost allocation between acquisition and retention. DTC prospecting spend allocated to new customer orders first. Configurable splits.
+3. Channel and Geography — profitability by Shopify, Amazon, TikTok Shop; country and US state level; map view with trend charts.
+4. Cart Combinations — beyond averages: surfacing % positive/negative within each cart combination. Exposes how averaging masks orders that destroy margin.
+5. Discounts and Promotions — cart-level, product-level, general discount breakdowns; histograms of discount intensity; A/B test results on discount elasticity.
+6. Profitability Simulator — waterfall view of CM changes across 15 input levers. Simulate what CM1/CM2/CM3 could be given various scenarios.
+
+## Why AI Is Structural in Atomic Profitability (Not Cosmetic)
+
+### AI Inherits the Constraint Layer
+Every number IQ/Claude touches has a known allocation method, reconciliation tolerance, locked date-attribution basis, and CM layer definitions signed off in a BRD. When a user asks "why did CM3 drop?", the system traces through discount allocation, fee attribution, and marketing spend rules to give a structural answer — not a hallucination.
+
+### AI Operates Across Six Domains Simultaneously
+A human reviewing the Discounts tab cannot simultaneously cross-reference cart combination profitability, channel mix, new-vs-returning splits, geo performance, and the waterfall simulator. IQ/Claude can. It surfaces relationships no sequential dashboard review catches.
+
+### Two AI Interaction Modes
+On-demand: Natural language queries against the certified profitability dataset. Answers trace back to documented allocation logic. Replaces the cycle of "ask an analyst, wait for a report, question the numbers." ("Could it tell me what our Black Friday Day One sales were? Those are the real-world questions." — Brian, CFO, Wellbeam)
+Scheduled: Daily headlines and weekly recaps covering the full profitability domain. Proactive narrative connecting changes across channels, geographies, customer segments, and discount behavior. ("I'm a big proponent of weekly reporting. Any issues we find, I want them reported weekly." — Jarrod, CFO, Javvy Coffee)
+
+## Why CM Is Hard — And Why DIY Fails
+Contribution Margin is a data integration and certification problem — not a dashboard problem. The required inputs live across multiple systems with different timing conventions, and even partial reporting is often untrusted because:
+- Refunds and adjustments are recognized on different dates across Shopify vs marketplaces.
+- Discounts appear in multiple forms (item/order/shipping, promotions, free gifts) and are often double-counted or misallocated.
+- Marketplace fees and settlement events do not map cleanly to "order tables."
+- Marketing spend must be aligned to the same reporting calendar and currency as orders.
+- Currency and timezone differences create day-level mismatches that break confidence.
+- Without reconciliation against source UIs, teams debate numbers instead of using them.
+Essentials solves this foundational problem once, with Saras owning the end-to-end stitching, definitions, and certification.
+
+## The Key Differentiator: Order-Level (Atomic) Profitability
+The core differentiator is having profitability at an order level — what Saras calls Atomic Profitability. All cost elements and revenue elements are brought to order level. Once at order level, it can be sliced and diced any way: by channel, SKU, region, new vs. returning, OTP vs subscription. This flexibility to understand where profit is coming from — and where money is being left on the table — is what no other tool currently delivers at this grain with full certification and reconciliation.
+
+Competitors like Lifetimely/BeProfit/Iris Finance use blanket assumptions. They work at aggregate but show 30–50% variance at granular level (by country, SKU, offer) and cannot be clicked through to underlying orders. Jarrod (Javvy Coffee) invested 200+ hours and still had unreliable numbers. Wellbeam's DIY warehouse cost ~$100K and delivered dashboards that were "90% wrong" on delivery.
+
+## Three Key Business Values (Ashraf's Framework — Internal)
+1. Tracking CM changes behavior: Most brands track revenue and optimize for revenue. The moment they start tracking CM, they discover what actually drives profit. "What gets measured gets improved."
+2. Identifying pockets of opportunity: Where is CM very high vs. very low? Double down where profit is high, cut spend where money is being lost.
+3. Measuring experiments with CM: Any A/B test, promotion, or initiative — the progress report should be a CM dashboard. ROAS and revenue are subsets of CM. The true measure of whether any experiment worked is: did CM3 increase, decrease, or stay the same?
+
+## Competitive Landscape
+
+### Bottom-Left: Turnkey, Blanket Assumptions
+Lifetimely, BeProfit, Iris Finance — connect Shopify + ad accounts, get instant CM dashboards. 90–95% accurate at aggregate. Breaks at granular level (30–50% variance by country, SKU, offer). Cannot customize allocation logic. Cannot click through to see underlying orders. Good for sub-$10M brands that just need directional visibility.
+
+### Middle: Better Data, Limited Flexibility
+Polar Analytics, Daasity — more sophisticated data models. Polar has strong multi-channel reporting. Daasity is warehouse-aware. But neither offers the certified, reconciled, BRD-locked dataset with documented allocation logic at order-line-item grain. Customization exists within platform constraints.
+
+### Top-Left: Maximum Flexibility, No Certification
+Spreadsheets, internal builds — infinitely customizable, zero trust. Every team builds their own version. Numbers never reconcile across departments. Revenue entries take "two people, four days" (Ridge). Finance teams invest 200+ hours trying to make it work (Jarrod). No compounding advantage across engagements. No reconciliation infrastructure. No AI layer.
+
+### Top-Middle: Custom but Fragile
+DIY data warehouse (Snowflake + Fivetran + agency) — closest to Atomic Profitability but without the productized delivery. Wellbeam had three internal data warehouses, still had accuracy problems. Jarrod spent ~$100K on a custom warehouse build that was "90% wrong" on delivery. Connectors break, nobody owns the fixes.
+
+### Atomic Profitability's Position: Top-Right (Certified + Configurable)
+Certified data (order-line-item grain, reconciled to +/-1%, 4 gate checks) combined with full configurability (BRD-locked definitions, documented allocation logic, client-specific cost structures). Plus AI grounded in the allocation metadata. No other player occupies this quadrant because it requires solving the data certification problem first — a 6-week delivery with deep platform-specific knowledge, not a connector plugin.
+
+## Why Competitors Cannot Get Here
+- Lifetimely/BeProfit/Iris Finance: Business model depends on low-touch onboarding. The moment they start doing BRD-level scoping, custom allocation logic, and platform reconciliation, they break their economics. Jarrod: "We invested heavily into Iris... we were basically building their platform for them, for free." Jordan: "With Iris, you can't use their data lake to build reports. They'd have to build it for you."
+- Polar Analytics/Daasity: Stronger data foundations but neither has the certified delivery playbook (presales feasibility, 3 structured scoping conversations, 4 gate checks, reconciliation against platform UIs). They build dashboards on top of integrated data. Saras builds a certified dataset with documented allocation logic, then puts dashboards and AI on top.
+- Zenlytics: AI-first approach. Strong on natural language queries. But AI without a certified data foundation produces confident answers the data cannot support. The more granular the question ("is this cart combination profitable?"), the more dangerous a wrong answer becomes. AI quality is bounded by data quality.
+- Spreadsheets/DIY warehouse: Maximum flexibility but zero productized delivery. Every engagement starts from scratch. No compounding advantage. No reconciliation infrastructure. No AI layer.
+
+## Common Objections and How to Handle Them
+
+"We close books monthly. That's our CM source."
+Monthly close gives you a rearview mirror, not a steering wheel. DTC brands making daily ad spend decisions need daily margin visibility. By the time monthly results arrive, the optimization window has closed. Ridge: paid media adjusts budgets daily. Jarrod: "50-60% of companies won't make December decisions until January." Jordan: "Somebody needs to look at a dashboard daily."
+
+"We already have a spreadsheet/internal tool that works."
+The question isn't whether it works in isolation. It's whether everyone agrees on the same numbers. The most common failure: three teams, three methods, none reconciling to platform UIs. Ridge: "Nothing was matching up between the three." Jarrod: "We invested heavily into Iris... helped them build their platform for free." Brian: "We had three internal data warehouses."
+
+"We use Lifetimely/Iris/BeProfit. It's fine."
+Plug-and-play tools use blanket assumptions. They work at aggregate. The moment you go granular (by country, by SKU, by offer), variance can be 30–50%. And you cannot click through to see underlying orders to verify. Jarrod: "Every other platform has blanket assumptions... shipping to Pennsylvania vs. Australia are different costs." Jordan: "With Saras, you can click in and see the data on a customer basis." Brian: "With Iris, you can't use their data lake to build reports."
+
+"We can't tie a direct ROI to this."
+The ROI is in decisions not missed and mistakes not made. Position it as a fractional data team, not a data warehouse. Brian: "I would not pay for a data warehouse. I would for sure pay for a data team." Ridge: "Buying wrong products based on incorrect information." Jarrod: "Finance team invested 200 hours on other platforms." Brian: "You save them from needing to hire a couple people."
+
+"The company that needs it most can't afford it."
+Don't pitch the platform. Pitch the outcome. "Show me what you use today. I'll make it better." Deliver confidence in the first report. Then expand. Avi: "What are the reports you use today? Let me recreate that." Jarrod: "If you had standard CM tracking examples, that would have been helpful." Brian: "We'll supplement the needs you already know you have."
+
+"I don't know you. Too many unknowns."
+Reduce the financial barrier (trial period). Case studies and brand advocates are the unlock. Every CFO said referrals are how they discover solutions. Jarrod: "Our tolerance for spending with no certainty was a big barrier... where you'd capture market share is purely through word of mouth." Jordan: "Referrals. Other brands doing well in a similar space."
+
+"We need customization. Five different modified versions of CM."
+Essentials delivers standardized CM1/CM2/CM3 with documented defaults. The BRD process captures client-specific definitions across 3 structured scoping conversations. Configuration within guardrails, not one-size-fits-all. Jordan: "There's no consensus on CM. Just clearly define CM1, CM2, CM3." Brian: "Never let customers use a percent approach for COGS. Always do cost per order."
+
+## Go-to-Market Signals
+Discovery channel: Word of mouth and referrals, not search. Every CFO heard about Saras through a podcast (Operators) or a peer. Jarrod: "Where you would capture market share is through word of mouth." Jordan: "Referrals."
+Buying barrier: Financial risk + time investment + lack of references. Fix: reduce financial friction (trial period), show standard CM templates upfront, build a reference network of advocate brands.
+Selling motion: "Do you know your CM1, CM2, CM3 on a daily basis?" is the opening question. Then: "Show me what you use today. I'll make it better." Confidence in the first report is the unlock.
+
+## Delivery Timeline (Essentials — 6 Weeks)
+- Day 0: Kickoff Meeting
+- Day 1: Setup integrations to standard platforms; start discovery meetings (business context, definition alignment)
+- Day 7: Pulse datasets configured; requirement gathering complete, BRD, SDD
+- Day 14: Validated platform datasets available; G-Sheet sources (COGS, DTC Fulfillment) received
+- Day 17: G-Sheet data incorporated into CM datasets
+- Day 21: Final validations complete — canonical CM dataset is ready at the 3-week mark
+- Day 23: Standard BI views setup, Saras IQ setup and validation complete
+- Day 25: Tweaks to views per client BRD requirements
+- Day 29: Complete validations and analysis
+- Day 30: v1 Demo and feedback
+- Day 35: Client feedback incorporated; final version delivered
+- Day 37–39: Workshops conducted
+
+Why 6 weeks: Essentials is not a dashboard build — it is a certified, multi-source, order-level profitability system where every number is explainable and reconcilable. Effort goes into multi-source order-level stitching, definition alignment, timezone/currency normalization, allocation logic, reconciliation and certification, and BI buildout + enablement.
+
+## Data Sources Supported (Essentials)
+Commerce Platforms: Shopify (DTC orders only), Amazon Vendor/Seller, TikTok Shop
+Advertising Platforms: Meta Ads, Google Ads, TikTok Ads, Microsoft Ads, Amazon Ads (SP, SB, SD), Snapchat Ads, Pinterest Ads, AppLovin. Additional platforms only if a native Daton connector is available.
+Subscription Platforms: Recharge, Skio, Loop (for OTP vs Subscription classification — Shopify DTC only)
+Merchant-Provided Inputs via Google Sheets: SKU-level landed COGS, fulfillment/delivery cost templates, target/benchmark percentages for CM, COGS, marketing, fulfillment, platform costs
+
+## Default Operating Assumptions (Essentials Delivery Standard)
+Any deviation from these requires explicit BRD documentation and is treated as Advanced scope:
+1. Reporting Orientation: Decision-oriented reporting using order_date. Directional reconciliation to accounting expected (not GAAP-aligned).
+2. Refund Attribution: Refunds attributed to refund_processed_date. Full refund amount at latest refund date per order.
+3. Canonical Dataset: Single order-line-item-level dataset. All BI views aggregate to order level and above.
+4. Sales Channel Inclusion: Shopify (DTC), Amazon marketplace, TikTok Shop. Wholesale, distributor, manual invoices, POS excluded.
+5. Net Sales Construction: Gross Sales + Net Shipping – Discounts – Refunds. Free gifts excluded from revenue; COGS/fulfillment retained.
+6. Discount Handling: Discounts present in platform order data only. Proportional allocation across line items.
+7. Marketing Allocation: Marketing spend → New customer orders for CM3; Amazon Ads → Amazon only.
+8. COGS Application: SKU-level, date-effective, applied using order_date. Coverage must meet 90% threshold.
+9. Currency Handling: Normalized to 1 reporting currency using daily FX rates (X-Rates).
+10. Reconciliation Tolerance: Monthly ±1% Sales/Discounts, ±1% Refunds, ±1% Fees, ±1% Marketing.
+11. Data Freshness: Commerce platform orders T+1 day. Ad platform spend T+1 to T+2. Amazon settlement events T+2 to T+5.
+12. BI Views Guaranteed in Essentials: Day, Sales Channel, Geo (Country + US State), New vs Returning, OTP vs Sub (Shopify DTC), Target vs Actual.
+
+## Key Prerequisites Clients Must Provide
+- Integration setup (Day 0–1): Client activates platform connections in Pulse
+- Google Sheet templates for COGS, DTC Fulfillment Costs, Non-Platform Marketing Costs (by Day 14)
+- UI viewer access to Shopify Admin, Amazon Seller Central, ad dashboards (before Day 14 for reconciliation)
+- BRD sign-off (by Day 8–10 post-kickoff)
 `,
 
   "cohorts": `

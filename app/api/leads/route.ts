@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
+import { logLeadCapture } from "@/lib/cccWriter"
+
 export async function POST(req: NextRequest) {
   const body = await req.json()
   const { name, email, company, revenue, tileId, tileTitle } = body
@@ -21,5 +23,8 @@ export async function POST(req: NextRequest) {
       console.error("Google Sheets webhook failed:", err)
     }
   }
+  // CCC write (non-blocking)
+  logLeadCapture({ name, email, company, revenue, tileId, tileTitle }).catch(() => {})
+
   return NextResponse.json({ success: true })
 }

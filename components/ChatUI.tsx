@@ -242,6 +242,26 @@ export default function ChatUI({ tile, onBack, visitorName, visitorEmail, visito
         const userTurnCount = displayedMessages.filter((m) => m.role === "user").length
         const score = scoreIntent(displayedMessages)
 
+        // CCC activity logging (fire-and-forget)
+        const conversationPhase =
+          userTurnCount <= 1 ? "arrival"
+          : userTurnCount <= 3 ? "topic_entry"
+          : score >= 6 ? "handoff"
+          : "discovery"
+        fetch("/api/activity", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agentId: tile.id,
+            agentTitle: tile.title,
+            visitorName,
+            visitorRole,
+            conversationPhase,
+            turnNumber: userTurnCount,
+            intentScore: score,
+          }),
+        }).catch(() => {})
+
         if (score >= 3) setShowBookingCTA(true)
 
         // At turn 7+, inject intent-based end component

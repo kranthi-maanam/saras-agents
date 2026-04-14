@@ -204,6 +204,26 @@ export default function DemoView({ tile, onBack, visitorName, visitorEmail, visi
         const score = scoreIntent(displayedMessages)
         if (score >= 3) setShowBookingCTA(true)
 
+        // CCC activity logging (fire-and-forget)
+        const conversationPhase =
+          userTurnCount <= 1 ? "arrival"
+          : userTurnCount <= 3 ? "topic_entry"
+          : score >= 6 ? "handoff"
+          : "discovery"
+        fetch("/api/activity", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            agentId: tile.id,
+            agentTitle: tile.title,
+            visitorName,
+            visitorRole,
+            conversationPhase,
+            turnNumber: userTurnCount,
+            intentScore: score,
+          }),
+        }).catch(() => {})
+
         if (userTurnCount >= 7 && !demoComponents.has(-1)) {
           const allText = displayedMessages.map((m) => m.content).join(" ").toLowerCase()
           const isHighIntent = HIGH_INTENT_KEYWORDS.some((kw) => allText.includes(kw))

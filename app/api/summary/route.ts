@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { logConversationSummary } from "@/lib/cccWriter"
 
 export async function POST(req: NextRequest) {
   const { name, email, role, insights, tileId, tileTitle, keyInsight, takeaways } = await req.json()
@@ -39,6 +40,9 @@ export async function POST(req: NextRequest) {
       // Non-blocking — do not fail the request if webhook is unavailable
     }
   }
+
+  // CCC write (non-blocking)
+  logConversationSummary({ name, email, role, insights, tileId, tileTitle, keyInsight, takeaways }).catch(() => {})
 
   return NextResponse.json({ ok: true })
 }

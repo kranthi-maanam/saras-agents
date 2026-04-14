@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { logBookingRequest } from "@/lib/cccWriter"
 export async function POST(req: NextRequest) {
   const { name, email, role, slot, tileTitle } = await req.json()
   if (!email) {
@@ -26,5 +27,9 @@ export async function POST(req: NextRequest) {
     }
   }
   console.log(`[book] Sales meeting requested by ${name} (${email}) — ${slot} — topic: ${tileTitle}`)
+
+  // CCC write (non-blocking)
+  logBookingRequest({ name, email, role, slot, tileTitle }).catch(() => {})
+
   return NextResponse.json({ ok: true })
 }

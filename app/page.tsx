@@ -9,6 +9,8 @@ import ChatUI from "@/components/ChatUI"
 import DemoView from "@/components/DemoView"
 import RoleModal from "@/components/RoleModal"
 import { tiles, type Tile } from "@/lib/tiles"
+import { CCCHeaderLink } from "@/components/ccc/CCCHeaderLink"
+import { HomeTicker } from "@/components/ccc/HomeTicker"
 
 const ICON_MAP: Record<string, React.ElementType> = {
   GitBranch, Database, DollarSign, Users, Megaphone, Package, Bot, Layers,
@@ -254,6 +256,7 @@ export default function Home() {
           Saras AI
         </span>
         <div className="flex items-center gap-3">
+          <CCCHeaderLink />
           <LiveBadge />
           <ThemeToggle />
         </div>
@@ -295,6 +298,11 @@ export default function Home() {
             <TileCard key={tile.id} tile={tile} onClick={() => handleTileClick(tile)} />
           ))}
         </div>
+      </section>
+
+      {/* CCC Live Ticker */}
+      <section className="relative z-10 px-4 pb-4 max-w-screen-xl w-full mx-auto">
+        <HomeTicker demo />
       </section>
 
       {/* Footer */}

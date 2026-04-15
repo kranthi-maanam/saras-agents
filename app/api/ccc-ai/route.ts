@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
-import Groq from "groq-sdk"
+import Anthropic from "@anthropic-ai/sdk"
 
-let _groq: Groq | null = null
-function getGroq(): Groq {
-  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY, maxRetries: 0 })
-  return _groq
+let _anthropic: Anthropic | null = null
+function getAnthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 0 })
+  return _anthropic
 }
+
+const MODEL = "claude-haiku-4-5"
 
 const ROLE_PROMPTS: Record<string, string> = {
   all: "You are a senior business analyst reviewing a customer's full lifecycle for the CEO. Give a crisp executive summary — where is this customer in their journey, what are the key signals, and what is the single most important next action?",
@@ -58,25 +60,34 @@ export async function POST(req: NextRequest) {
       ? `Answer this specific question about the customer: ${question}`
       : "Give me your analysis and recommended next action."
 
-    const stream = await getGroq().chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        { role: "system", content: `${rolePrompt}\n\nBe concise — 3-5 sentences max unless asked for more. No bullet spam. Speak like a sharp colleague who has read everything and knows what matters.` },
-        { role: "user", content: `${customerContext}\n\n${userQuestion}` },
-      ],
-      stream: true,
+    const stream = getAnthropic().messages.stream({
+      model: MODEL,
       max_tokens: 400,
       temperature: 0.4,
+      system: `${rolePrompt}\n\nBe concise — 3-5 sentences max unless asked for more. No bullet spam. Speak like a sharp colleague who has read everything and knows what matters.`,
+      messages: [
+        { role: "user", content: `${customerContext}\n\n${userQuestion}` },
+      ],
     })
 
     const encoder = new TextEncoder()
     const readable = new ReadableStream({
       async start(controller) {
-        for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content ?? ""
-          if (text) controller.enqueue(encoder.encode(text))
+        try {
+          for await (const event of stream) {
+            if (
+              event.type === "content_block_delta" &&
+              event.delta.type === "text_delta"
+            ) {
+              const text = event.delta.text
+              if (text) controller.enqueue(encoder.encode(text))
+            }
+          }
+        } catch (err) {
+          console.error("[ccc-ai] stream error", err)
+        } finally {
+          controller.close()
         }
-        controller.close()
       },
     })
 

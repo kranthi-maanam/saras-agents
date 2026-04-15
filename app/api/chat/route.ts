@@ -1,20 +1,18 @@
-import Groq from "groq-sdk"
+import Anthropic from "@anthropic-ai/sdk"
 import { getSystemPrompt, getPhase } from "@/lib/systemPrompt"
 
 // Module-level lazy singleton — avoids re-instantiation on every request
-let _groq: Groq | null = null
-function getGroq() {
-  if (!_groq) _groq = new Groq({ apiKey: process.env.GROQ_API_KEY, maxRetries: 0 })
-  return _groq
+let _anthropic: Anthropic | null = null
+function getAnthropic() {
+  if (!_anthropic) _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY, maxRetries: 0 })
+  return _anthropic
 }
 
 export const maxDuration = 30
 
-const MODELS = [
-  "llama-3.1-8b-instant",
-  "llama-3.3-70b-versatile",
-  "gemma2-9b-it",
-]
+const MODEL = "claude-haiku-4-5"
+
+type ChatMessage = { role: "user" | "assistant"; content: string }
 
 export async function POST(req: Request) {
   const { messages, tileId, tileTitle, visitorName, visitorRole } = await req.json()
@@ -32,44 +30,43 @@ export async function POST(req: Request) {
     phase
   )
 
-  let stream
-  const groq = getGroq()
-  for (const model of MODELS) {
-    try {
-      stream = await groq.chat.completions.create({
-        model,
-        max_tokens: 1024,
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...messages,
-        ],
-        stream: true,
-      })
-      break
-    } catch (err: unknown) {
-      const status = (err as { status?: number }).status
-      if (status === 429 && model !== MODELS[MODELS.length - 1]) {
-        continue
-      }
-      throw err
-    }
-  }
+  // Anthropic requires the system prompt as a top-level param and only
+  // user/assistant roles in messages.
+  const conversation = (messages as ChatMessage[]).filter(
+    (m) => m.role === "user" || m.role === "assistant"
+  )
 
-  if (!stream) throw new Error("All models rate-limited")
+  const stream = getAnthropic().messages.stream({
+    model: MODEL,
+    max_tokens: 1024,
+    system: systemPrompt,
+    messages: conversation,
+  })
 
   const encoder = new TextEncoder()
 
-  // Stream tokens directly to the client as they arrive — no buffering
+  // Stream tokens directly to the client as they arrive — keep the existing
+  // SSE protocol the ChatUI expects: `data: ${JSON.stringify(token)}\n\n`.
   const readable = new ReadableStream({
     async start(controller) {
-      for await (const chunk of stream) {
-        const token = chunk.choices[0]?.delta?.content ?? ""
-        if (token) {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(token)}\n\n`))
+      try {
+        for await (const event of stream) {
+          if (
+            event.type === "content_block_delta" &&
+            event.delta.type === "text_delta"
+          ) {
+            const token = event.delta.text
+            if (token) {
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify(token)}\n\n`))
+            }
+          }
         }
+      } catch (err) {
+        console.error("[chat] stream error", err)
+      } finally {
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"))
+        controller.close()
       }
-      controller.enqueue(encoder.encode("data: [DONE]\n\n"))
-      controller.close()
     },
   })
 
